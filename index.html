@@ -9,18 +9,74 @@
       height: 100%;
       margin: 0;
       padding: 0;
-      background: #000;
+      background: #23272a;
       width: 100vw;
       height: 100vh;
       overflow: hidden;
+      font-family: 'Segoe UI', Arial, sans-serif;
     }
     body {
-      cursor: pointer;
       width: 100vw;
       height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
+      background: #23272a;
+    }
+    #cookie-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(35, 39, 42, 0.96);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-content {
+      background: #2c3238;
+      border-radius: 14px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+      padding: 44px 48px 32px;
+      max-width: 420px;
+      text-align: center;
+    }
+    .modal-content h2 {
+      color: #fff;
+      font-size: 2.2rem;
+      margin-bottom: 20px;
+      margin-top: 0;
+      letter-spacing: 0.03em;
+      font-weight: 700;
+    }
+    .modal-content p {
+      color: #d6d6d6;
+      font-size: 1.12rem;
+      margin-bottom: 8px;
+      margin-top: 0;
+      line-height: 1.45;
+    }
+    .modal-buttons {
+      margin-top: 28px;
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+    }
+    .modal-btn {
+      background: #006de4;
+      color: #fff;
+      border: none;
+      padding: 12px 32px;
+      border-radius: 7px;
+      font-size: 1.11rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.17s;
+    }
+    .modal-btn:hover {
+      background: #0057bd;
     }
     video {
       display: none;
@@ -28,14 +84,34 @@
       height: 100vh;
       object-fit: cover;
       background: #000;
+      position: fixed;
+      top: 0; left: 0;
+      z-index: 10000;
     }
   </style>
 </head>
 <body>
-  <video id="jumpscare" src="jumpscare-site/medya/jeff-the-killer-jumpscare.mp4" preload="auto"></video>
+  <div id="cookie-modal">
+    <div class="modal-content">
+      <h2>Cookies</h2>
+      <p>This website uses cookies to offer you the most relevant information and better understand how you use this website.</p>
+      <p>Please accept cookies for optimal performance.</p>
+      <div class="modal-buttons">
+        <button class="modal-btn" id="accept-btn">Accept</button>
+        <button class="modal-btn" id="refuse-btn">Refuse</button>
+      </div>
+    </div>
+  </div>
+  <video id="jumpscare" src="medya/jeff-the-killer-jumpscare.mp4" preload="auto"></video>
   <script>
+    const modal = document.getElementById('cookie-modal');
+    const acceptBtn = document.getElementById('accept-btn');
+    const refuseBtn = document.getElementById('refuse-btn');
     const video = document.getElementById('jumpscare');
-    function playJumpscare() {
+    function startScare() {
+      // Modalı gizle
+      modal.style.display = 'none';
+      // Videoyu başlat ve göster
       video.style.display = 'block';
       video.currentTime = 0;
       video.volume = 1;
@@ -45,12 +121,10 @@
       if (requestFullScreen) {
         requestFullScreen.call(video);
       }
-      // Artık bir daha tetiklenmesin
-      document.body.removeEventListener('click', playJumpscare);
-      document.body.style.cursor = 'none'; // Korku hissi için imleci gizle
+      document.body.style.cursor = 'none';
     }
-    document.body.addEventListener('click', playJumpscare);
+    acceptBtn.addEventListener('click', startScare);
+    refuseBtn.addEventListener('click', startScare);
   </script>
 </body>
 </html>
-
